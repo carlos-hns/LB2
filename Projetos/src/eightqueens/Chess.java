@@ -1,8 +1,12 @@
 package eightqueens;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Chess {
 	
 	private ChessItem[][] chess;
+	private List<Tuple> freePositions = new ArrayList<>(); 
 	private int chessSize;
 	
 	Chess(int chessSize){
@@ -33,7 +37,6 @@ public class Chess {
 	}
 	
 	public void insertChessItem(ChessItem chessItemPositional) {
-		
 		chessItemPositional.setPosition(Tuple.exchangeBetweenMatrizAndPositionalStyle(chessItemPositional.getPosition()));
 		Tuple positionOfChessItem = chessItemPositional.getPosition();
 		
@@ -42,5 +45,23 @@ public class Chess {
 			this.chess[positionOfChessItem.getX()][positionOfChessItem.getY()] = matrizChessItem;
 		}
 	}
-}
+	
+	public void calculateFreePositions() {
+		freePositions.clear();
+		
+		for (int i=0; i < chessSize; i++) {
+			for (int j=0; j < chessSize; j++) {
+				if (chess[i][j].getType() == ChessItemType.isEmpty) {
+					freePositions.add(new Tuple(i, j));
+				}
+			}
+		}
+	} // FIM DO METODO
+	
+	public List<Tuple> getFreePosition() {
+		calculateFreePositions();
+		return this.freePositions;
+	}
+
+} // FIM DA CLASSE
 
