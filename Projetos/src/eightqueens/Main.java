@@ -10,10 +10,32 @@ public class Main {
 
 	public static void main(String[] args) {
 		
+		Result[] plays = new Result[1000];
+		for (int i=0; i < 1000; i++) {
+			plays[i] = runOneRound();
+		}
+		
+		int wins = 0;
+		System.out.printf("%10s%20s%21s\n", "Iteração", "Solução Encontrada", "Rainhas no Tabuleiro");
+		
+		for (int i=0; i < 1000; i++) {
+			if (plays[i].getResult() == true) {
+				wins++;
+			}
+			System.out.printf("%10d%20s%21s\n", i, plays[i].getResult(), plays[i].getQuantityOfQueens());
+		}
+		System.out.printf("\n%10s%20s\n", "Total", "Soluções");
+		System.out.printf("    ---------------------------------\n");
+		System.out.printf("%10d%20d\n", 1000, wins);
+		
+		
+	}// Fim do main/Regras de negocio
+
+	private static Result runOneRound() {
 		SecureRandom random = new SecureRandom();
 		
 		Chess chess = new Chess(8);
-		chess.printChess();
+		//chess.printChess();
 		
 		List<Queen> queens = new ArrayList<>();
 		Set<ChessItem> queensMovementsPossibilities = new HashSet<>();
@@ -28,7 +50,7 @@ public class Main {
 			chess.insertChessItem(queenMovement);
 		}
 		
-		chess.printChess();
+		//chess.printChess();
 		
 		// NOVO A PARTIR DAQUI
 		
@@ -47,14 +69,17 @@ public class Main {
 			}
 			
 			freePositions = chess.getFreePosition();
-			chess.printChess();
-		
+			//chess.printChess();
+			
 		}
 		
+		int queensInChess = queens.size();
+		if (queensInChess == 8) {
+			return new Result(true, queensInChess);
+		}
 		
-		
-		
-		
-	}// Fim do main/Regras de negocio
+		return new Result(false, queensInChess);
+	
+	}
 }// Fim da Classe
 
