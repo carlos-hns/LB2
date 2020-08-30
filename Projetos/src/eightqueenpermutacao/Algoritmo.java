@@ -3,13 +3,21 @@ package eightqueenpermutacao;
 public class Algoritmo {
 	
 	static int numeroDeSolucoes = 0;
-	
-	private void trocarPosicaoDeDoisItensNoArray(int vetor[], int i, int j) {
+
+	private void trocarPosicaoDeDoisItensNoArray(int vetor[], int posicaoUm, int posicaoDois) {
 		int temporario;
-		temporario = vetor[i];
-		vetor[i] = vetor[j];
-		vetor[j] = temporario;
+		temporario = vetor[posicaoUm];
+		vetor[posicaoUm] = vetor[posicaoDois];
+		vetor[posicaoDois] = temporario;
 	}
+	
+	/** 
+	 * Calcula se a solução é válida, como a base do algoritmo diz que
+	 * cada rainha só pode ocupar uma linha dentro de uma coluna, calculamos
+	 * apenas as diagonais. (Calculamos apenas as diagonais superiores,
+	 * tendo em vista que se uma rainha estiver na diagonal inferior ela
+	 * será pega pela diagonal superior de outra rainha).
+	*/
 	
 	private boolean calcularSeSolucaoEValida(int linhas[]) {
 		int x, y;
@@ -48,28 +56,52 @@ public class Algoritmo {
 		return true;
 	}
 	
-	private void TestaPermutacoes(int linhas[], int k) { 
+	/** 
+	 * Como funciona o algoritmo:
+	 * 
+	 * Os elementos com índices menores que k estão fixos. 
+	 * A função gera as permutações dos elementos com índices maiores ou iguais a k.
+	 * Se k=8, então todos elementos estão fixos e o vetor vai ser verificado e impresso
+	 * Caso contrário, fixamos um novo elemento na posição k e testamos as permutações a partir do índice k+1.
+	 * Repetimos esse processo fixando todos os possíveis elementos na posição k.
+	*/
+	 
+	/**
+	 * Exemplo de funcionamento:
+	 * 
+	 * Iniciando com k = 0, o primeiro elemento deve ser permutado com todo o array. 
+	 * Por se tratar de uma função recursiva a função será chamada novamente dentro dela (Fixando elemento após elemento 
+	 * até chegar em k = 8), onde será verificado se é uma solução válida.
+	 * Após isso a função será retornada e o valor que tinha sido trocado na permuta voltará ao seu lugar anterior, permitindo que o
+	 * restante das possibilidades sejam testadas.
+	 */
+	
+	private void testarPermutacoes(int linhas[], int k) { 
 		if(k == 8) {
-			if(calcularSeSolucaoEValida(linhas))
-				ImprimeSolucao(linhas);
+			if(calcularSeSolucaoEValida(linhas)) imprimirSolucao(linhas);
 		}
 		else{
 			for(int i = k; i < 8; i++) {
 				trocarPosicaoDeDoisItensNoArray(linhas, k, i);
-				TestaPermutacoes(linhas, k + 1);
+				testarPermutacoes(linhas, k + 1);
 				trocarPosicaoDeDoisItensNoArray(linhas, i, k);
 			}
 		}
 	}
 	
+	/** 
+	 * Preenche o array com as rainhas na diagonal principal
+	 * e inicia as permutações.
+	*/
+	
 	public void calcularSolucoes8Rainhas() {
 		int linhas[] = new int[8];
 		for(int i = 0; i < 8; i++)
 			linhas[i] = i;
-		TestaPermutacoes(linhas, 0);
+		testarPermutacoes(linhas, 0);
 	}
 	
-	private void ImprimeSolucao(int linhas[]){
+	private void imprimirSolucao(int linhas[]){
 		char[][] tabuleiro = new char[8][8];
 		
 		int i,j;
