@@ -1,8 +1,16 @@
 package eightqueenpermutacao;
 
+import java.util.ArrayList;
+import java.util.List;
+
+// ALGORITMO BASEADO EM FORÇA BRUTA, IRÁ TESTAR TODAS AS POSSIBILIDADES
+// ATÉ ENCONTRAR TODAS AS POSSIBILIDADES VALIDAS!
+
 public class Algoritmo {
 	
 	static int numeroDeSolucoes = 0;
+	static int iteracoes = 0;
+	private List<Resultado> resultado1000Iteracoes = new ArrayList<>();
 
 	private void trocarPosicaoDeDoisItensNoArray(int vetor[], int posicaoUm, int posicaoDois) {
 		int temporario;
@@ -78,7 +86,14 @@ public class Algoritmo {
 	
 	private void testarPermutacoes(int linhas[], int k) { 
 		if(k == 8) {
-			if(calcularSeSolucaoEValida(linhas)) imprimirSolucao(linhas);
+			boolean solucaoValida = calcularSeSolucaoEValida(linhas);
+			
+			if (Algoritmo.iteracoes < 1000) {
+				resultado1000Iteracoes.add(new Resultado(Algoritmo.iteracoes, solucaoValida));
+				Algoritmo.iteracoes++;
+			}
+			
+			if(solucaoValida) imprimirSolucao(linhas);
 		}
 		else{
 			for(int i = k; i < 8; i++) {
@@ -127,6 +142,23 @@ public class Algoritmo {
 			}    
 			System.out.printf("\n");
 		}
+	}
+	
+	public void imprimirIteracoesTabular() {
+		int solucoesValidas = 0;
+		Resultado solucao;
+		System.out.printf("\n\n\n\n\n    ---------------------------------\n");
+		System.out.printf("%10s%20s\n", "Iteração", "Solução Encontrada");
+		for (int i=0 ; i < resultado1000Iteracoes.size(); i++) {
+			solucao = resultado1000Iteracoes.get(i);
+			if (solucao.isSolucaoValida()) {
+				solucoesValidas++;
+			}
+			System.out.println(solucao);
+		}
+		System.out.printf("\n%10s%10s\n", "Total", "Soluções");
+		System.out.printf("    ---------------------------------\n");
+		System.out.printf("%10d%10d\n", 1000, solucoesValidas);
 	}
 	
 } // FIM DA CLASSE
