@@ -25,4 +25,9 @@ public class Esfera extends FormaTridimensional {
 	public double volume() {
 		return 4.0/3.0 * Math.PI * super.getDimensao1() * super.getDimensao1() * super.getDimensao1();
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("Esfera é uma %s", super.toString());
+	}
 }

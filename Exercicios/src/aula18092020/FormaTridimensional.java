@@ -47,5 +47,10 @@ public abstract class FormaTridimensional extends Forma {
 	
 	public abstract double area();
 	public abstract double volume();
+	
+	@Override
+	public String toString() {
+		return String.format("FormaTridimensional é uma %s", super.toString());
+	}
 
 }

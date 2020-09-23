@@ -28,4 +28,10 @@ public abstract class FormaBidimensional extends Forma {
 	}
 	
 	public abstract double area();
+	
+	@Override
+	public String toString() {
+		return String.format("FormaBidimensional é uma %s", super.toString());
+	}
+	
 }

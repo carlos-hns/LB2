@@ -25,6 +25,9 @@ public class Circulo extends FormaBidimensional {
 		return "Circulo";
 	}
 
-	
+	@Override
+	public String toString() {
+		return String.format("Circulo é uma %s", super.toString());
+	}
 	
 }
